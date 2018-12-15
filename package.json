@@ -1,0 +1,26 @@
+{
+  "name": "neil-backend",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "Josh Stillman",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build-ts": "tsc",
+    "mail": "yarn build-ts && node dist/mailer.js",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "dependencies": {
+    "@types/dotenv": "^6.1.0",
+    "@types/nodemailer": "^4.6.5",
+    "dotenv": "^6.2.0",
+    "expresss": "^0.0.0",
+    "moment": "^2.23.0",
+    "nodemailer": "^4.7.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
+  },
+  "devDependencies": {
+    "ts-lint": "^4.5.1"
+  }
+}
