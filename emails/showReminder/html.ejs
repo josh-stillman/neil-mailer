@@ -168,7 +168,6 @@
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
 
-
       <!-- VIEW ONLINE -->
       <!-- <tr>
         <td width="100%" valign="top" align="center" class="padding-container" style="padding: 18px 0px 0px 0px!important; mso-padding-alt: 18px 0px 0px 0px;">
@@ -199,7 +198,7 @@
                               <!-- START HEADER IMAGE -->
                               <tr>
                                 <td align="center" class="hund" width="600">
-                                  <a href="https://www.electricneil.com" target="_blank"><img src="https://www.electricneil.com/electric-neil-logo2.png" width="300" alt="Logo" border="0" style="max-width: 300px; display:block; "></a>
+                                  <a href="https://www.electricneil.com" target="_blank"><img src="https://www.electricneil.com/electric-neil-logo2.png" width="300" alt="Electric Neil" border="0" style="max-width: 300px; display:block; "></a>
                                 </td>
                               </tr>
                               <!-- END HEADER IMAGE -->
@@ -233,21 +232,19 @@
                               <!-- START HEADER IMAGE -->
                               <tr>
                                 <td align="center" class="hund ripplelink" width="600">
-                                  <img align="center" width="600" style="border-radius: 3px 3px 0px 0px; width: 100%; max-width: 600px!important;" class="hund" src="./neil-brew-show.png">
+                                  <img align="center" width="600" style="border-radius: 3px 3px 0px 0px; width: 100%; max-width: 600px!important;" class="hund" src="<%= imgLink %>">
                                 </td>
                               </tr>
                               <!-- END HEADER IMAGE -->
                               <!-- START BODY COPY -->
                               <tr>
                                 <td class="td-padding" align="left" style="font-family: 'Roboto Mono', monospace; color: #212121!important; font-size: 24px; line-height: 30px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 13px;">
-                                  The Return of the Neil!
+                                  <%= header %>
                                 </td>
                               </tr>
                               <tr>
-                                <td class="td-padding" align="left" style="font-family: 'Roboto Mono', monospace; color: #212121!important; font-size: 16px; line-height: 24px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 18px;">
-                                  This is an html email template based on Google's Material Design. This template has been tested on 33 major email clients using Litmus Builder. Feel free to use this for whatever purpose.
-                                  <br><br>
-                                  Enjoy! :)
+                                <td class="td-padding" align="left" style="font-family: 'Roboto Mono', monospace; color: #212121!important; font-size: 16px; line-height: 24px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 18px; white-space: pre-line;">
+                                  <%= body %>
                                 </td>
                               </tr>
                               <!-- END BODY COPY -->
@@ -313,7 +310,7 @@
                                         </tr>
                                         <tr>
                                           <td bgcolor="#ffffff" class="td-padding" align="left" style="font-family: 'Roboto Mono', monospace; color: #212121!important; font-size: 24px; line-height: 30px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 13px;">
-                                            8pm Sat. 8/10
+                                            <%= showTime %>
                                           </td>
                                         </tr>
                                         <!-- <tr>
@@ -331,7 +328,7 @@
                                                   <table border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
                                                       <td align="center" style="border-radius: 3px;" bgcolor="#fc3f1e">
-                                                        <a class="button raised" href="http://paulgoddarddesign.com/email-marketing" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #fc3f1e; display: inline-block;">ADD TO CALENDAR</a>
+                                                        <a class="button raised" href="<%= calendarLink %>" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #fc3f1e; display: inline-block;">ADD TO CALENDAR</a>
                                                       </td>
                                                     </tr>
                                                   </table>
@@ -361,7 +358,7 @@
                                         </tr>
                                         <tr>
                                           <td bgcolor="#ffffff" class="td-padding" align="left" style="font-family: 'Roboto Mono', monospace; color: #212121!important; font-size: 24px; line-height: 30px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 13px;">
-                                            <a>The Bitter End<a>
+                                            <%= venue %>
                                           </td>
                                         </tr>
                                         <!-- <tr>
@@ -379,7 +376,7 @@
                                                   <table border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
                                                       <td align="left" style="border-radius: 3px;" bgcolor="#25e47a">
-                                                        <a class="button raised" href="http://paulgoddarddesign.com/email-marketing" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #25e47a; display: inline-block;">DIRECTIONS</a>
+                                                        <a class="button raised" href="<%= mapLink %>" target="_blank" style="font-size: 14px; line-height: 14px; font-weight: 500; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 10px 25px; border: 1px solid #25e47a; display: inline-block;">DIRECTIONS</a>
                                                       </td>
                                                     </tr>
                                                   </table>
@@ -440,7 +437,7 @@
                             <table border="0" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td align="right" valign="top" class="social">
-                                  <a href="#"
+                                  <a href="https://www.facebook.com/electricneil"
                                   target="_blank">
                                   <img src="http://paulgoddarddesign.com/emails/images/material-design/fb-icon.png"
                                   height="24" alt="Facebook" border="0" style="display:block; max-width: 24px">
