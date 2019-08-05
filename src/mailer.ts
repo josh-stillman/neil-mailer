@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { NeilDB } from './db';
-import { User } from './types';
+import { User, EmailDetails } from './types';
 
 const mailgunOptions = {
   auth: {
@@ -17,7 +17,7 @@ const mailgunOptions = {
 const xport = mailgunTransport(mailgunOptions);
 const mailgun = nodemailer.createTransport(xport);
 
-const sendMail = async () => {
+const sendMail = async (emailDetails: EmailDetails) => {
   const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/neil';
 
   const ndb = new NeilDB(mongoUrl);
@@ -25,11 +25,11 @@ const sendMail = async () => {
 
   const col = await ndb.getCollection('subscribers')
 
-  const users = await col.find({}).limit(1);
+  const users = await col.find({});
 
   await users.forEach(async (user: User ) => {
     if (!user.confirmed) {
-      console.log("skpuser not confirmed", user._id)
+      console.log("skipping; user not confirmed", user._id)
       return;
     }
 
@@ -38,6 +38,8 @@ const sendMail = async () => {
         from: 'neil@electricneil.com',
       },
       transport: mailgun,
+      send: true,
+      juice: false,
       views: {
         options: {
           extension: 'ejs'
@@ -51,14 +53,7 @@ const sendMail = async () => {
         to: user.email,
       },
       locals: {
-        subject: 'Electric Neil at the Bitter End this Saturday',
-        imgLink: '/Users/joshstillman/Development/personal-projects/neil-mailer/emails/showReminder/neil-brew-show.png',
-        header: 'The Return of the Neil!',
-        body: `Greetings Neil Fans,\n\nFresh off our Rockaway Brewery warmup show, The Neil is back for its official return show this Saturday, August 10th, at 8pm at the historic Bitter End on Bleeker Street!\n\nMario's foot is all healed up, and the Neil is sounding bigger and badder than ever with the addition of the newest Neiler, Mike Bruno on guitar and vocals.\n\nWe'll be playing a bunch of new tunes, a few old favorites, and even some new originals.  Come on out and Neil-Out with us this Saturday evening. It'll be a Neiling good time.`,
-        showTime: '8pm Sat. 8/10',
-        calendarLink: 'https://calendar.google.com',
-        venue: 'The Bitter End',
-        mapLink: 'https://maps.google.com',
+        ...emailDetails,
         unsubscribeLink: `https://www.electricneil.com/unsubscribe/${user._id}`,
       }
     })
@@ -71,4 +66,16 @@ const sendMail = async () => {
   await ndb.disconnect();
 }
 
-sendMail();
+const details = {
+  subject: 'Electric Neil at the Bitter End -- Saturday 8pm',
+  imgLink: 'https://www.electricneil.com/neil-brew-show.png',
+  header: 'The Return of the Neil!',
+  body: `Fresh off our Rockaway Brewery warmup show, The Neil is back for its official return show this Saturday, August 10th, at 8pm at the historic Bitter End on Bleeker Street!\n\nMario's foot is all healed up, and the Neil is sounding bigger and badder than ever with the addition of the newest Neiler, Mike Bruno on guitar and vocals.\n\nWe'll be playing a bunch of new tunes, a few old favorites, and even some new originals.  It'll be a Neiling good time...`,
+  showTime: '8pm Sat. 8/10',
+  calendarLink: 'https://calendar.google.com/event?action=TEMPLATE&tmeid=Mm50YnBjZTBjaGpwYzY0dmc0M2Q4ZGhuYm4gZzA2Ym1ib2ZwYzQ5Zm84OWVzc250MzRsdjRAZw&tmsrc=g06bmbofpc49fo89essnt34lv4%40group.calendar.google.com',
+  venue: 'The Bitter End',
+  mapLink: 'https://goo.gl/maps/qWcSimbhfmL6WS8T8',
+}
+
+
+sendMail(details);

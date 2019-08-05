@@ -6,3 +6,14 @@ export interface User {
   createdAt: string;
   confirmed: boolean;
 }
+
+export interface EmailDetails {
+  subject: string;
+  imgLink: string;
+  header: string;
+  body: string;
+  showTime: string;
+  calendarLink: string;
+  venue: string;
+  mapLink: string;
+}
