@@ -5,6 +5,7 @@ export interface User {
   email: string;
   createdAt: string;
   confirmed: boolean;
+  phoneNumber?: string;
 }
 
 export interface EmailDetails {
