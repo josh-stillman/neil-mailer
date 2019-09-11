@@ -1,18 +1,12 @@
 import nodemailer from 'nodemailer';
-import mailgunTransport from 'nodemailer-mailgun-transport'
+import mailgunTransport from 'nodemailer-mailgun-transport';
+import Email from 'email-templates';
 import dotenv from 'dotenv';
 dotenv.config();
 
 import { NeilDB } from './db';
-
-// const transporter = nodemailer.createTransport({
-//   host: process.env.MAIL_HOST || '',
-//   port: parseInt(process.env.MAIL_PORT, 10) || 587,
-//   auth: {
-//     user: process.env.MAIL_USER || '',
-//       pass: process.env.MAIL_PW || '',
-//   },
-// });
+import { User, EmailDetails } from './types';
+import { emailLocals } from './locals';
 
 const mailgunOptions = {
   auth: {
@@ -24,97 +18,54 @@ const mailgunOptions = {
 const xport = mailgunTransport(mailgunOptions);
 const mailgun = nodemailer.createTransport(xport);
 
-const sendMail = async () => {
-  const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017';
+const sendMail = async (emailDetails: EmailDetails) => {
+  const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/neil';
 
   const ndb = new NeilDB(mongoUrl);
   await ndb.connect();
 
-  const col = await ndb.getCollection('subscribers')
-
-  await col.insertOne({ email: 'test1', createdAt: new Date(), confirmed: false})
+  const col = await ndb.getCollection('subscribers');
 
   const users = await col.find({});
 
-  await users.forEach((user: any) => {
-    const message = {
-      from: 'neil@electricneil.com',
-      to: user.email,
-      subject: 'mailgun test msg✔',
-      text: 'NEIL!',
-      html: `<p>hello ${user.email}, your mongo id is ${user._id}</p>`
-    };
+  await users.forEach(async (user: User ) => {
+    if (!user.confirmed) {
+      console.log('skipping; user not confirmed', user._id);
+      return;
+    }
 
-
-    mailgun.sendMail(message, (err: any, info: any) => {
-      if (err) {
-        console.log('Error occurred. ' + err.message);
-        return process.exit(1);
-      }
-      console.log("err, info", err, info)
-      console.log('Message sent: %s', info.messageId);
-      // Preview only available when sending through an Ethereal account
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    const email = new Email({
+      message: {
+        from: 'neil@electricneil.com',
+        cc: ['dfast83@gmail.com', 'josh.stillman@gmail.com', 'lamf83@gmail.com', 'mjcaccio@gmail.com'],
+      },
+      transport: mailgun,
+      send: true,
+      juice: false,
+      views: {
+        options: {
+          extension: 'ejs',
+        },
+      },
     });
+
+    await email.send({
+      template: 'showReminder',
+      message: {
+        to: user.email,
+      },
+      locals: {
+        ...emailDetails,
+        unsubscribeLink: `https://www.electricneil.com/unsubscribe/${user._id}`,
+      },
+    })
+    .then((res: any) => {
+      console.log('res.originalMessage', res.originalMessage);
+    })
+    .catch(console.error);
   });
 
   await ndb.disconnect();
-}
+};
 
-sendMail();
-
-
-
-// const gmail = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//            user: process.env.GMAIL_USER,
-//            pass: process.env.GMAIL_PW,
-//        },
-// });
-
-// const message = {
-//   from: 'neil@electricneil.com',
-//   to: 'joshstillman@gmail.com',
-//   subject: 'mailgun test msg✔',
-//   text: 'NEIL!',
-//   html: '<p><b>NEIL</b> to myself!</p>'
-// };
-
-// mailgun.sendMail(message, (err: any, info: any) => {
-//     if (err) {
-//       console.log('Error occurred. ' + err.message);
-//       return process.exit(1);
-//     }
-//     console.log("err, info", err, info)
-//     console.log('Message sent: %s', info.messageId);
-//     // Preview only available when sending through an Ethereal account
-//     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-// });
-
-
-
-
-// // transporter.sendMail(message, (err, info) => {
-// //     if (err) {
-// //         console.log('Error occurred. ' + err.message);
-// //       return process.exit(1);
-// //     }
-
-// //     console.log('Message sent: %s', info.messageId);
-// //     // Preview only available when sending through an Ethereal account
-// //     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-// // });
-// // gmail.sendMail(message, (err, info) => {
-//     if (err) {
-//         console.log('Error occurred. ' + err.message);
-//       return process.exit(1);
-//     }
-
-//     console.log('Message sent: %s', info.messageId);
-//     // Preview only available when sending through an Ethereal account
-//     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-// });
-
-
-// });
+// sendMail(emailLocals);

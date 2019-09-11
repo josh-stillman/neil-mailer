@@ -1,0 +1,6 @@
+{
+  "ignore": [".git", "dist", "node_modules", "emails"],
+  "watch": ["src"],
+  "exec": "npm run emailPreviewServer",
+  "ext": "ts"
+}
