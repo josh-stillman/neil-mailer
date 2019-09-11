@@ -18,3 +18,11 @@ app.get('/:templateId', (req: any, res: any) => {
 });
 
 app.listen(4000, () => console.log('Email Preview Server running on port 4000!'));
+
+/*
+  Steps to send:
+  1. Update Image, Copy, Calendar, and Map links
+  2. Update Subject
+  3. Preview
+  4. Send
+*/

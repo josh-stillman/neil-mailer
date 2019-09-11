@@ -10,9 +10,10 @@
     "mail": "yarn build-ts && node dist/mailer.js",
     "db": "yarn build-ts && node dist/db.js",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "csv-import": "tsc && node dist/scripts/importSubscribers.js",
+    "csvImport": "tsc && node dist/scripts/importSubscribers.js",
     "sms": "tsc && node dist/smsSender.js",
-    "emailPreview": "tsc && node dist/emailPreview/index.js"
+    "emailPreviewServer": "tsc && node dist/emailPreview/index.js",
+    "emailPreview": "nodemon --config emailPreviewer.nodemon.json"
   },
   "dependencies": {
     "@types/dotenv": "^6.1.0",
@@ -33,6 +34,7 @@
     "mongoose": "^5.4.1",
     "nodemailer": "^4.7.0",
     "nodemailer-mailgun-transport": "^1.4.0",
+    "nodemon": "^1.19.2",
     "papaparse": "^5.0.1",
     "tslint": "^5.11.0",
     "twilio": "^3.33.3",
