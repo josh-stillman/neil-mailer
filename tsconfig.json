@@ -14,7 +14,7 @@
               "src/types/*"
           ]
       },
-    "noUnusedLocals": true,
+    "noUnusedLocals": false
   },
   "include": [
       "src/**/*"

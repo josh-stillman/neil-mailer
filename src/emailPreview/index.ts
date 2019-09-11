@@ -1,20 +1,20 @@
-// import express from 'express';
-// import path from 'path';
+import express from 'express';
+import path from 'path';
 
-// const app = express();
+import { emailLocals } from '../locals';
 
-// app.set('view engine', 'ejs');
-// // app.set('views', path.join(__dirname, '../..', '/emails/schedule-appointment'));
+const app = express();
 
-// const LOCALS = {
-//   unsubscribeLink: 'https://www.electricneil.com/unsubscribe'
-// };
+app.set('view engine', 'ejs');
 
-// app.get('/favicon.ico', (req: any, res: any) => res.status(204));
+app.get('/favicon.ico', (req: any, res: any) => res.status(204));
 
-// app.get('/:templateId', (req: any, res: any) => {
-//   app.set('views', path.join(__dirname, '../..', `/emails/${req.params.templateId}`));
-//   res.render('html', LOCALS);
-// });
+app.get('/:templateId', (req: any, res: any) => {
+  app.set('views', path.join(__dirname, '../..', `/emails/${req.params.templateId}`));
+  res.render('html', {
+    ...emailLocals,
+    unsubscribeLink: `https://www.electricneil.com/unsubscribe/`,
+  });
+});
 
-// app.listen(4000, () => console.log('Email Preview Server running on port 4000!'));
+app.listen(4000, () => console.log('Email Preview Server running on port 4000!'));
