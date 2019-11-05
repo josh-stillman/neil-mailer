@@ -31,7 +31,7 @@
     "express": "^4.17.1",
     "expresss": "^0.0.0",
     "moment": "^2.23.0",
-    "mongoose": "^5.4.1",
+    "mongoose": "^5.7.5",
     "nodemailer": "^4.7.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemon": "^1.19.2",
