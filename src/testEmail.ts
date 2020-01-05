@@ -4,9 +4,9 @@ import Email from 'email-templates';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { NeilDB } from './db';
 import { User, EmailDetails } from './types';
 import { emailLocals } from './locals';
+import { ObjectId } from 'bson';
 
 const mailgunOptions = {
   auth: {
@@ -18,17 +18,16 @@ const mailgunOptions = {
 const xport = mailgunTransport(mailgunOptions);
 const mailgun = nodemailer.createTransport(xport);
 
-const sendMail = async (emailDetails: EmailDetails) => {
-  const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/neil';
+const sendTestMail = async (emailDetails: EmailDetails) => {
+  const users: User[] = [{
+    _id: new ObjectId(),
+    name: 'josh',
+    email: 'joshstillman+neil-test@gmail.com',
+    confirmed: true,
+    createdAt: new Date().toISOString(),
+  }];
 
-  const ndb = new NeilDB(mongoUrl);
-  await ndb.connect();
-
-  const col = await ndb.getCollection('subscribers');
-
-  const users = await col.find({});
-
-  await users.forEach(async (user: User ) => {
+  users.forEach(async (user: User ) => {
     if (!user.confirmed) {
       console.log('skipping; user not confirmed', user._id);
       return;
@@ -36,7 +35,7 @@ const sendMail = async (emailDetails: EmailDetails) => {
 
     const email = new Email({
       message: {
-        from: 'neil@electricneil.com',
+        from: 'neil@electricneil.com'
       },
       transport: mailgun,
       send: true,
@@ -52,12 +51,10 @@ const sendMail = async (emailDetails: EmailDetails) => {
       template: 'showReminder',
       message: {
         to: user.email,
-        cc: ['joshstillman@gmail.com']
-        // cc: ['joshstillman@gmail.com', 'dfast83@gmail.com', 'lamf83@gmail.com', 'mjcaccio@gmail.com']
       },
       locals: {
         ...emailDetails,
-        name: user.name || '',
+        name: user.name,
         unsubscribeLink: `https://www.electricneil.com/unsubscribe/${user._id}`,
       },
     })
@@ -67,7 +64,6 @@ const sendMail = async (emailDetails: EmailDetails) => {
     .catch(console.error);
   });
 
-  await ndb.disconnect();
 };
 
-sendMail(emailLocals);
+sendTestMail(emailLocals);

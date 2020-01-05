@@ -13,6 +13,7 @@ app.get('/:templateId', (req: any, res: any) => {
   app.set('views', path.join(__dirname, '../..', `/emails/${req.params.templateId}`));
   res.render('html', {
     ...emailLocals,
+    name: 'test name',
     unsubscribeLink: `https://www.electricneil.com/unsubscribe/`,
   });
 });

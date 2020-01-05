@@ -8,6 +8,7 @@
   "scripts": {
     "build-ts": "tsc",
     "mail": "yarn build-ts && node dist/mailer.js",
+    "testEmail": "yarn build-ts && node dist/testEmail.js",
     "db": "yarn build-ts && node dist/db.js",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "csvImport": "tsc && node dist/scripts/importSubscribers.js",

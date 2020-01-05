@@ -7,7 +7,8 @@ import { NeilDB } from './db';
 import { User } from './types';
 
 // const body = 'This is the Electric Neil Hotline at 587-NEIL. Get ready to rock out with the boys tomorrow at 8pm at the Bitter End! 🤘 STOP to cancel.';
-const body = '587-NEIL inviting you to jam w/ Electric Neil today at 9pm at the Way Station.🤘 (Psst.. call this number for a top-secret Neil message). STOP to cancel.';
+// const body = '587-NEIL inviting you to jam w/ Electric Neil today at 9pm at the Way Station.🤘 (Psst.. call this number for a top-secret Neil message). STOP to cancel.';
+const body = 'Electric Neil Holiday Revue, 9pm tomorrow at the Bitter End. Special guests, xmas tunes & costumes, rock n roll. 🎅🎄🦌🎁🕎🎸🤘. STOP to cancel.';
 
 const sendSms = async () => {
 
@@ -19,8 +20,8 @@ await ndb.connect();
 const col = await ndb.getCollection('subscribers');
 
 // For testing
-const users = await col.find({ phoneNumber: /4252736456/ }).toArray();
-// const users = await col.find({ phoneNumber: { '$exists' : true }}).toArray();
+// const users = await col.find({ phoneNumber: /4252736456/ }).toArray();
+const users = await col.find({ phoneNumber: { '$exists' : true }}).toArray();
 
 const phoneNumbers = users.map((user: User) => user.phoneNumber).filter((number: string) => number !== '');
 console.log('phone numbers are', phoneNumbers);
