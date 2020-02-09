@@ -14,7 +14,9 @@
     "csvImport": "tsc && node dist/scripts/importSubscribers.js",
     "sms": "tsc && node dist/smsSender.js",
     "emailPreviewServer": "tsc && node dist/emailPreview/index.js",
-    "emailPreview": "nodemon --config emailPreviewer.nodemon.json"
+    "emailPreview": "nodemon --config emailPreviewer.nodemon.json",
+    "bitPost": "tsc && node dist/neilPoster/BITScript.js",
+    "igPost": "tsc && node dist/neilPoster/IGScript.js"
   },
   "dependencies": {
     "@types/dotenv": "^6.1.0",
@@ -25,6 +27,7 @@
     "@types/nodemailer": "^4.6.5",
     "@types/nodemailer-mailgun-transport": "^1.3.3",
     "@types/papaparse": "^5.0.1",
+    "@types/puppeteer": "2.0.0",
     "@types/twilio": "^0.0.10",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.2",
@@ -37,6 +40,8 @@
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemon": "^1.19.2",
     "papaparse": "^5.0.1",
+    "puppeteer": "2.0.0",
+    "request-promise": "4.2.5",
     "tslint": "^5.11.0",
     "twilio": "^3.33.3",
     "typescript": "^3.2.2"
