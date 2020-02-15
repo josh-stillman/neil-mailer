@@ -1,27 +1,79 @@
 import puppeteer from 'puppeteer'
 import devices from 'puppeteer/DeviceDescriptors';
 import dotenv from 'dotenv';
+import { NeilPost } from './postRunner';
 dotenv.config();
 
 // const puppeteer = require('puppeteer')
 // const devices = require('puppeteer/DeviceDescriptors')
 const iPhonex = devices['iPhone X'];
 
-// TODO: file should be an argument here, fetch before promise.all the posting.
-//TODO: delete file from disk after post.
-// TODO: figure out where to
-const post = async () => {
+export const igPost = async (neilPost: NeilPost) => {
+  try {
 
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
-    headless: false
-  })
+    if (!neilPost.services.ig || !neilPost.tempImageLocation){
+      console.error('Missing information for igPost');
+      return;
+    }
 
-  const page = await browser.newPage();
-  await page.emulate(iPhonex);
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+      headless: false
+    })
 
-  //TODO - env var.
-  await page.goto(process.env.IG_URL)
+    const context = await browser.createIncognitoBrowserContext();
+
+    await context.overridePermissions(process.env.IG_URL, ['notifications'])
+
+    const page = await context.newPage()
+
+    await page.emulate(iPhonex);
+
+    await page.goto(process.env.IG_URL)
+
+    await login(page);
+
+    //remember me prompt
+    await waitAndClick('button.GAMXX', page);
+
+    // add to home screen prompt
+    // await page.waitForSelector('button.aOOlW:last-of-type', {timeout: 1000}).catch(e => 'add to home screen prompt not found');
+    // if (page.$('button.aOOlW:last-of-type')) {
+    //   await page.click('button.aOOlW:last-of-type')
+    // }
+
+    // Turn on notifications prompt
+    // await page.waitForSelector('button.aOOlW:last-of-type', {timeout: 1000}).catch(e => 'notifications prompt not found');
+    // if (page.$('button.aOOlW:last-of-type')) {
+    //   await page.click('button.aOOlW:last-of-type')
+    // }
+
+    await page.waitFor(3000);
+
+    const [fileChooser] = await Promise.all([
+      page.waitForFileChooser(),
+      page.click('svg[aria-label="New Post"]'), // some button that triggers file selection
+    ]);
+
+    await fileChooser.accept([neilPost.tempImageLocation])
+    await page.waitForSelector('button.UP43G');
+    await page.click('button.UP43G')
+
+    await page.waitForSelector('textarea[aria-label="Write a caption…"]');
+
+
+    await page.type('textarea[aria-label="Write a caption…"]', neilPost.text)
+    await page.click('button.UP43G')
+
+    await page.waitFor(3000)
+
+    await browser.close();
+  } catch(e) {
+    console.log('error is', e);
+  }
+}
+
+const login = async (page: puppeteer.Page) => {
   await page.waitForSelector('button.sqdOP.L3NKy.y3zKF');
   await page.click('button.sqdOP.L3NKy.y3zKF')
 
@@ -31,45 +83,18 @@ const post = async () => {
   await page.type('[name="password"]', process.env.IG_PW, {delay: 10})
   await page.type('[name="username"]', process.env.IG_NAME, {delay: 10})
   await page.click('[type="submit"]');
-  //remember
-  await page.waitForSelector('button.GAMXX');
-  if (page.$('button.GAMXX')) {
 
-    await page.click('button.GAMXX')
-  }
-  // add to home screen
-  await page.waitForSelector('button.aOOlW:last-of-type');
-  if (page.$('button.aOOlW:last-of-type')) {
-    await page.click('button.aOOlW:last-of-type')
-  }
-
-  // await page.click('span[aria-label="New Post"]')
-
-  // const request = require('request-promise');
-
-  // const fileData = await request({
-  //     uri: 'https://www.electricneil.com/dan-noir.jpg',
-  //     encoding: 'binary'
-  // });
-
-  // fs.writeFileSync('./dan8.jpg', {encoding: 'binary'} 'fileData');
-
-
-  const [fileChooser] = await Promise.all([
-    page.waitForFileChooser(),
-    page.click('span[aria-label="New Post"]'), // some button that triggers file selection
-  ]);
-
-  await fileChooser.accept(['./dan8.jpg'])
-  await page.waitForSelector('button.UP43G');
-  await page.click('button.UP43G')
-
-  await page.waitForSelector('textarea');
-
-
-  await page.type('textarea', "Neil gettin' funky!")
-  await page.click('button.UP43G')
-
-  //TODO - env vars
+  await page.waitForNavigation();
 }
-post();
+
+const waitAndClick = async (selector: string, page: puppeteer.Page) => {
+  try {
+    if (!page.$(selector)) {
+      await page.waitForSelector(selector, {timeout: 5000})
+    }
+    await page.click(selector)
+  } catch (e) {
+    console.log('selector did not appear', selector);
+  }
+}
+// post();
