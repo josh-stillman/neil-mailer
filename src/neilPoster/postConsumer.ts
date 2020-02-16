@@ -12,6 +12,10 @@ const consume = async () => {
 
     const posts = await col.find({ executeAt: { $lte: new Date() }}).toArray();
 
+    if (!posts.length) {
+      console.log('Nothing to post', new Date().toDateString());
+    }
+
     for (const post of posts) {
       await executePost(post);
       await col.deleteOne({_id: post._id})
@@ -19,7 +23,7 @@ const consume = async () => {
 
     await ndb.disconnect();
 
-    console.log('Posting complete');
+    console.log('Posting complete', new Date().toDateString());
   } catch (e) {
     console.error('Error in post consumer', e)
   }

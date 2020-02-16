@@ -31,6 +31,10 @@ export const igPost = async (neilPost: NeilPost) => {
 
     await page.goto(process.env.IG_URL)
 
+    await setLocalStorage(page);
+
+    await page.goto(process.env.IG_URL)
+
     await login(page);
 
     //remember me prompt
@@ -96,5 +100,13 @@ const waitAndClick = async (selector: string, page: puppeteer.Page) => {
   } catch (e) {
     console.log('selector did not appear', selector);
   }
+}
+
+const setLocalStorage = async (page: puppeteer.Page) => {
+  await page.evaluate(() => {
+    localStorage.setItem('pigeon_state', `${new Date().getTime()}`);
+    localStorage.setItem('ig_a2hs_dismiss', `${new Date().setMonth(new Date().getMonth() + 1)}`);
+    localStorage.setItem('one_tap_storage_version', process.env.ONE_TAP);
+  });
 }
 // post();

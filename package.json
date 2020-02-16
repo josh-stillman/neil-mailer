@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build-ts": "tsc",
+    "build-ts": "tsc && cp .env dist/.env",
     "mail": "yarn build-ts && node dist/mailer.js",
     "testEmail": "yarn build-ts && node dist/testEmail.js",
     "db": "yarn build-ts && node dist/db.js",
