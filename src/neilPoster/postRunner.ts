@@ -7,20 +7,22 @@ dotenv.config();
 import { bitPost } from "./BITScript";
 import { igPost } from "./IGScript";
 import { sendTweet } from "./twitter";
+import { addTextToImage } from './imageProcessor';
 
 export interface NeilPost {
-  _id: ObjectId;
+  _id?: ObjectId;
   createdAt: string;
   executeAt: string;
   imageName: string;
   tempImageLocation?: string;
+  imageText?: string;
   text: string;
   calendarLink?: string;
   services: {
-    ig: boolean;
-    bit: boolean;
-    fb: boolean;
-    tw: boolean;
+    ig?: boolean;
+    bit?: boolean;
+    fb?: boolean;
+    tw?: boolean;
   }
 }
 
@@ -34,6 +36,10 @@ export const executePost = async (neilPost: NeilPost) => {
     }
 
     const tempImageLocation = await saveTempImage(neilPost.imageName);
+
+    if (neilPost.imageText) {
+      await addTextToImage(tempImageLocation, neilPost.imageText);
+    }
 
     const finalPost: NeilPost = {
       ...neilPost,

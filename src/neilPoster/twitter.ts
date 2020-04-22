@@ -13,27 +13,37 @@ const client = new Twitter({
 });
 
 export const sendTweet = async (neilPost: NeilPost) => {
+  try {
+    if (!neilPost.tempImageLocation) {
+      console.error('no image provided')
+    }
 
-  if (!neilPost.tempImageLocation) {
-    console.error('no image provided')
+    var data = fs.readFileSync(neilPost.tempImageLocation);
+    console.log('data is', data);
+
+    var stats = fs.statSync(neilPost.tempImageLocation)
+    var fileSizeInBytes = stats["size"]
+    //Convert the file size to megabytes (optional)
+    var fileSizeInMegabytes = fileSizeInBytes / 1000000.0
+    console.log('filesize', fileSizeInMegabytes, stats);
+
+    const mediaId = await client.post('media/upload', {media: data}).catch((err: any) => console.log('error posting image', err));
+
+    console.log(mediaId);
+    if (!mediaId) {
+      return;
+    }
+
+    var status = {
+      status: neilPost.text,
+      media_ids: mediaId.media_id_string
+    }
+
+    const result = await client.post('statuses/update', status).catch((err: any) => console.log(err));;
+
+    console.log(result);
+  } catch(e) {
+    console.log('Error posting to Twitter', e);
   }
-
-  var data = fs.readFileSync(neilPost.tempImageLocation);
-
-  const mediaId = await client.post('media/upload', {media: data}).catch((err: any) => console.log(err));
-
-  console.log(mediaId);
-  if (!mediaId) {
-    return;
-  }
-
-  var status = {
-    status: neilPost.text,
-    media_ids: mediaId.media_id_string
-  }
-
-  const result = await client.post('statuses/update', status).catch((err: any) => console.log(err));;
-
-  console.log(result);
 }
 

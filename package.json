@@ -17,13 +17,16 @@
     "emailPreview": "nodemon --config emailPreviewer.nodemon.json",
     "bitPost": "tsc && node dist/neilPoster/BITScript.js",
     "igPost": "tsc && node dist/neilPoster/IGScript.js",
-    "neilPoster": "tsc && node dist/neilPoster/postConsumer.js"
+    "neilPoster": "tsc && node dist/neilPoster/postConsumer.js",
+    "neilScheduler": "tsc && node dist/neilPoster/postSetter.js",
+    "testImage": "tsc && node dist/neilPoster/imageProcessor.js"
   },
   "dependencies": {
     "@types/dotenv": "^6.1.0",
     "@types/ejs": "^2.6.3",
     "@types/email-templates": "^3.5.1",
     "@types/express": "^4.17.0",
+    "@types/luxon": "1.21.0",
     "@types/mongoose": "^5.3.5",
     "@types/nodemailer": "^4.6.5",
     "@types/nodemailer-mailgun-transport": "^1.3.3",
@@ -37,6 +40,8 @@
     "email-templates": "^6.0.0",
     "express": "^4.17.1",
     "expresss": "^0.0.0",
+    "jimp": "0.9.3",
+    "luxon": "1.22.0",
     "moment": "^2.23.0",
     "mongoose": "^5.4.1",
     "nodemailer": "^4.7.0",
