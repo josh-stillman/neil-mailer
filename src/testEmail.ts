@@ -55,7 +55,7 @@ const sendTestMail = async (emailDetails: EmailDetails) => {
       locals: {
         ...emailDetails,
         name: user.name,
-        unsubscribeLink: `https://www.electricneil.com/unsubscribe/${user._id}`,
+        unsubscribeLink: `https://www.electricneil.com/?unsubscribe=${user._id}`,
       },
     })
     .then((res: any) => {

@@ -14,7 +14,7 @@ app.get('/:templateId', (req: any, res: any) => {
   res.render('html', {
     ...emailLocals,
     name: 'test name',
-    unsubscribeLink: `https://www.electricneil.com/unsubscribe/`,
+    unsubscribeLink: `https://www.electricneil.com/?unsubscribe=asdf`,
   });
 });
 
