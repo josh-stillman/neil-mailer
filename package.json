@@ -36,7 +36,7 @@
     "nodemailer": "^4.7.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemon": "^1.19.2",
-    "papaparse": "^5.0.1",
+    "papaparse": "^5.2.0",
     "tslint": "^5.11.0",
     "twilio": "^3.33.3",
     "typescript": "^3.2.2"
