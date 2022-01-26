@@ -52,7 +52,7 @@ const sendMail = async (emailDetails: EmailDetails) => {
       template: 'showReminder',
       message: {
         to: user.email,
-        cc: ['joshstillman@gmail.com']
+        // cc: ['joshstillman@gmail.com']
         // cc: ['joshstillman@gmail.com', 'dfast83@gmail.com', 'lamf83@gmail.com', 'mjcaccio@gmail.com']
       },
       locals: {
